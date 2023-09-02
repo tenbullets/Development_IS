@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+.container {
+    width: 100%;
+    max-width: 1170px;
+    margin: 0 auto;
+}
+
+.header__inner {
+    display: flex;
+    padding: 13px;
+}
+
+.header__logo {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search_engine {
+    padding: 0 52px;
+}
+
+.search_str {
+    padding: 0px 202px 5px 8px;
+    margin: 0px 5px 8px 50px;
+}
+
+.search_button {
+    margin: 2px 0 0 372px;
+    padding: 5px;
+}
+
+.footer {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer__inner {
+    display: flex;
+    padding: 13px;
+}
+
+.footer__text {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.basic {
+    height: 1000px;
+    background: url("img/фон.jpg") center;
+}
