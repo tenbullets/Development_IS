@@ -81,6 +81,25 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
+    }
 
+    @Override
+    public boolean findUserByEmail(String email) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_FROM_DRIVER);
+
+            while (resultSet.next()) {
+                User user = User.builder()
+                        .email((resultSet.getString("email")))
+                        .build();
+                if (user.getEmail().equals(email)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

@@ -11,4 +11,6 @@ public interface CrudRepository<T> {
     Optional<T> findByLogin(T login);
 
     boolean findUser(String username, String password);
+
+    boolean findUserByEmail(String email);
 }

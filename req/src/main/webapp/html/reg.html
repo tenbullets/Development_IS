@@ -15,7 +15,7 @@
         <div class="container_1">
             <div class="header__inner">
                 <div class="header__text">
-                    <h1>Welcome</h1>
+                    <h1>Register</h1>
                 </div>
             </div>
         </div>
@@ -24,21 +24,27 @@
     <div class="basic">
         <div class="container_2">
             <div class="basic__inner">
-                <div class="block__2">
-                    <form action="introReg" method="GET">
-                        <h4 class="block__text_1">Go to Registration</h4>
-                        <button>GO</button>
+
+                <div class="block__3">
+                    <form action="reg" method="POST">
+                        <h4 class="block__text">Registration</h4>
+
+                        <label for="username">Username</label>
+                        <input name="username" placeholder="Enter Username" id="username">
+
+                        <label for="email">Your Email</label>
+                        <input name="email" placeholder="Enter Email" id="email">
+
+                        <label for="password">Password</label>
+                        <input name="password" placeholder="Enter Password" id="password">
+
+                        <label for="password">Repeat Password</label>
+                        <input name="second_password" placeholder="Enter Password" id="password">
+
+                        <button>Register</button>
                     </form>
                 </div>
-
-
-                <div class="block__2">
-                    <form action="introAut" method="GET">
-                        <h4 class="block__text_1">Go to Authorization</h4>
-                        <button>GO</button>
-                    </form>
-                </div>
-
+                
             </div>
         </div>
 

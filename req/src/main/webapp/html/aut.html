@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/style_3.css">
-    <title>Registration</title>
+    <title>Authorization</title>
 </head>
 
 <body>
@@ -15,7 +15,7 @@
         <div class="container_1">
             <div class="header__inner">
                 <div class="header__text">
-                    <h1>Welcome</h1>
+                    <h1>Come in</h1>
                 </div>
             </div>
         </div>
@@ -24,18 +24,18 @@
     <div class="basic">
         <div class="container_2">
             <div class="basic__inner">
-                <div class="block__2">
-                    <form action="introReg" method="GET">
-                        <h4 class="block__text_1">Go to Registration</h4>
-                        <button>GO</button>
-                    </form>
-                </div>
+                
+                <div class="block__3">
+                    <form action="aut" method="POST">
+                        <h4 class="block__text">Authorization</h4>
 
+                        <label for="username">Username</label>
+                        <input name="username" placeholder=" Enter Username" id="username">
 
-                <div class="block__2">
-                    <form action="introAut" method="GET">
-                        <h4 class="block__text_1">Go to Authorization</h4>
-                        <button>GO</button>
+                        <label for="password">Password</label>
+                        <input name="password" placeholder="Enter Password" id="password">
+
+                        <button>Log In</button>
                     </form>
                 </div>
 

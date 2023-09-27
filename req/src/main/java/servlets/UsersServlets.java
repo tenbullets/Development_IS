@@ -41,16 +41,13 @@ public class UsersServlets extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         List result;
         try {
             result = usersRepository.allUsers();
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-//        System.out.println(result.size());
         request.setAttribute("usersForJsp", result);
         request.getRequestDispatcher("/jsp/users.jsp").forward(request, response);
-
     }
 }

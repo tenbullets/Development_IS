@@ -43,23 +43,26 @@ public class RegServlet extends HttpServlet {
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);) {
             Statement statement = connection.createStatement();
-            String sql = "insert into users(username, email, password)" +
-                    " values ('" + username + "', '" + email + "', '" + password + "');";
-            int affectedRows = statement.executeUpdate(sql);
-
+//            String res = check(username, password, secondPassword, email, affectedRows);
+//            String[] parts = res.split("&");
             String result;
             String status;
 
-            if (affectedRows > 0 &&
-                    !password.isEmpty() &&
-                    !username.isEmpty() &&
-                    password.equals(secondPassword) &&
-                    !email.isEmpty()) {
-                result = "User " + username + " is registered";
-                status = "Successful Registration";
+            if(usersRepository.findUserByEmail(email)) {
+                result = "User " + username + " with this email: " + email + " is already registered";
+                status = "Registration Failed";
             } else {
-                result = "User is not registered";
-                status = "Failed Registration";
+                if (!password.isEmpty() && !username.isEmpty() && password.equals(secondPassword) && !email.isEmpty()) {
+                    String sql = "insert into users(username, email, password)" +
+                            " values ('" + username + "', '" + email + "', '" + password + "');";
+                    statement.executeUpdate(sql);
+
+                    result = "User " + username + " is registered";
+                    status = "Successful Registration";
+                } else {
+                    result = "User is not registered";
+                    status = "Failed Registration";
+                }
             }
 
             request.setAttribute("resultOfAut", result);
@@ -69,6 +72,29 @@ public class RegServlet extends HttpServlet {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
     }
+
+//    public String check(String username, String password, String secondPassword, String email, int affectedRows) {
+//        String result;
+//        String status;
+//
+//        if(usersRepository.findUserByEmail(email)) {
+////            result = "User " + username + " is already registered";
+//            result = "User " + username + " with this email: " + email + " is already registered";
+//            status = "Registration Failed";
+//        } else {
+//            if (affectedRows > 0 &&
+//                    !password.isEmpty() &&
+//                    !username.isEmpty() &&
+//                    password.equals(secondPassword) &&
+//                    !email.isEmpty()) {
+//                result = "User " + username + " is registered";
+//                status = "Successful Registration";
+//            } else {
+//                result = "User is not registered";
+//                status = "Failed Registration";
+//            }
+//        }
+//        return result + "&" + status;
+//    }
 }
