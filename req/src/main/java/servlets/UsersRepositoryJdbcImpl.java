@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class UsersRepositoryJdbcImpl implements UsersRepository {
@@ -16,7 +17,8 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
 
     private final Statement statement;
 
-    private static final String SQL_SELECT_ALL_FROM_DRIVER = "select * from users_3";
+    private static final String USERS = "select * from users";
+    private static final String UUID = "select * from uuid";
 
     public UsersRepositoryJdbcImpl(Connection connection, Statement statement) {
         this.statement = statement;
@@ -27,7 +29,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     public List allUsers() {
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_FROM_DRIVER);
+            ResultSet resultSet = statement.executeQuery(USERS);
             List<User> result = new ArrayList<>();
 
             while (resultSet.next()) {
@@ -64,7 +66,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     public boolean findUser(String username, String password) {
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_FROM_DRIVER);
+            ResultSet resultSet = statement.executeQuery(USERS);
 
             while (resultSet.next()) {
                 User user = User.builder()
@@ -85,7 +87,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     public boolean findUserByEmail(String email) {
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_FROM_DRIVER);
+            ResultSet resultSet = statement.executeQuery(USERS);
 
             while (resultSet.next()) {
                 User user = User.builder()
@@ -103,19 +105,33 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
 
     @Override
     public String findUserByUuid(String uuid) {
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_FROM_DRIVER);
+        try (Statement statement = connection.createStatement()) {
+            ResultSet uuidDb = statement.executeQuery(UUID);
 
-            while (resultSet.next()) {
+            User copy = null;
+
+            while (uuidDb.next()) {
                 User user = User.builder()
-                        .username(resultSet.getString("username"))
-                        .uuid(resultSet.getString("uuid"))
+                        .id(uuidDb.getString("user_id"))
+                        .uuid(uuidDb.getString("uuid"))
                         .build();
-                if (user.getUuid().equals(uuid)) {
+                if(user.getUuid().equals(uuid)) {
+                    copy = user;
+                }
+            }
+
+            ResultSet usersDb = statement.executeQuery(USERS);
+            while (usersDb.next()) {
+                User user = User.builder()
+                        .id(usersDb.getString("user_id"))
+                        .username(usersDb.getString("username"))
+                        .build();
+                assert copy != null;
+                if(Objects.equals(copy.getId(), user.getId())) {
                     return user.getUsername();
                 }
             }
+
             return "0";
         } catch (SQLException e) {
             throw new IllegalStateException(e);
@@ -124,19 +140,33 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
 
     @Override
     public String returnUuid(String username) {
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_FROM_DRIVER);
+        try (Statement statement = connection.createStatement()){
+            ResultSet usersDb = statement.executeQuery(USERS);
 
-            while (resultSet.next()) {
+            User copy = null;
+
+            while (usersDb.next()) {
                 User user = User.builder()
-                        .username(resultSet.getString("username"))
-                        .uuid(resultSet.getString("uuid"))
+                        .id(usersDb.getString("user_id"))
+                        .username(usersDb.getString("username"))
                         .build();
-                if (user.getUsername().equals(username)) {
+                if(user.getUsername().equals(username)) {
+                    copy = user;
+                }
+            }
+
+            ResultSet uuidDb = statement.executeQuery(UUID);
+            while (uuidDb.next()) {
+                User user = User.builder()
+                        .id(uuidDb.getString("user_id"))
+                        .uuid(uuidDb.getString("uuid"))
+                        .build();
+                assert copy != null;
+                if(Objects.equals(copy.getId(), user.getId())) {
                     return user.getUuid();
                 }
             }
+
             return "0";
         } catch (SQLException e) {
             throw new IllegalStateException(e);
@@ -147,12 +177,11 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     public boolean findUserByName(String username) {
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_FROM_DRIVER);
+            ResultSet resultSet = statement.executeQuery(USERS);
 
             while (resultSet.next()) {
                 User user = User.builder()
                         .username(resultSet.getString("username"))
-                        .uuid(resultSet.getString("uuid"))
                         .build();
                 if (user.getUsername().equals(username)){
                     return true;

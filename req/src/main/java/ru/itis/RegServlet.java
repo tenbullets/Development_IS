@@ -57,9 +57,13 @@ public class RegServlet extends HttpServlet {
                     String uniqueID = UUID.randomUUID().toString();
 //                    System.out.println(uniqueID);
 
-                    String sql = "insert into users_3(uuid, username, email, password)" +
-                            " values ('" + uniqueID + "', '" + username + "', '" + email + "', '" + password + "');";
-                    statement.executeUpdate(sql);
+                    String sql1 = "insert into users(username, email, password)" +
+                            " values ('" + username + "', '" + email + "', '" + password + "');";
+                    statement.executeUpdate(sql1);
+
+                    String sql2 = "insert into uuid(uuid)" +
+                            " values ('" + uniqueID + "');";
+                    statement.executeUpdate(sql2);
 
                     Cookie uuidCookie = new Cookie("id",uniqueID);
                     response.addCookie(uuidCookie);

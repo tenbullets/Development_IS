@@ -41,7 +41,7 @@ public class GoToLogServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Cookie[] cookie = (request.getCookies());
-        String username = usersRepository.findUserByUuid(returnUuid(cookie));
+        String username = usersRepository.findUserByUuid(getUuid(cookie));
         String result = username + " welcome";
         String status = "Login Successful";
 
@@ -50,7 +50,7 @@ public class GoToLogServlet extends HttpServlet {
         request.getRequestDispatcher("/jsp/result.jsp").forward(request, response);
     }
 
-    public String returnUuid(Cookie[] cookie) {
+    public String getUuid(Cookie[] cookie) {
         for (Cookie value : cookie) {
             if (value.getName().equals("id")) {
                 return value.getValue();

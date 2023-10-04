@@ -10,6 +10,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 @Builder
 public class User {
+    private String id;
     private String uuid;
     private String username;
     private String email;

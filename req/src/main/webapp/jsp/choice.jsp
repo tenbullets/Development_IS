@@ -51,15 +51,15 @@
         </div>
     </div>
 
-<%--    <footer>--%>
-<%--        <div class="container">--%>
-<%--            <div class="footer__inner">--%>
-<%--                <div class="footer__text">--%>
-<%--                    <h3>tg: zhertvapropagandynolana</h3>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </footer>--%>
+    <footer>
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__text">
+                    <h3>tg: zhertvapropagandynolana</h3>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </div>
 
