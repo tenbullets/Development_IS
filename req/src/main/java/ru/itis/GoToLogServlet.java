@@ -15,7 +15,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 @WebServlet("/goToLog")
 public class GoToLogServlet extends HttpServlet {
     private static final String DB_USER = "postgres";
@@ -38,10 +37,11 @@ public class GoToLogServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Cookie[] uuid = (request.getCookies());
-        String username = usersRepository.findUserByUuid(uuid[0].getValue());
+        Cookie[] cookie = (request.getCookies());
+        String username = usersRepository.findUserByUuid(returnUuid(cookie));
         String result = username + " welcome";
         String status = "Login Successful";
 
@@ -49,4 +49,14 @@ public class GoToLogServlet extends HttpServlet {
         request.setAttribute("status", status);
         request.getRequestDispatcher("/jsp/result.jsp").forward(request, response);
     }
+
+    public String returnUuid(Cookie[] cookie) {
+        for (Cookie value : cookie) {
+            if (value.getName().equals("id")) {
+                return value.getValue();
+            }
+        }
+        return null;
+    }
+
 }

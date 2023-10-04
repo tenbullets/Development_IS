@@ -43,9 +43,15 @@ public class IntroAutServlet extends HttpServlet {
         if(request.getCookies() == null) {
             request.getRequestDispatcher("/html/aut.html").forward(request, response);
         } else {
-            Cookie[] uuid = (request.getCookies());
-            String username = usersRepository.findUserByUuid(uuid[0].getValue());
-//            System.out.println("name: " + uuid[0].getName());
+            Cookie[] cookie = (request.getCookies());
+            String username = usersRepository.findUserByUuid(returnUuid(cookie));
+
+//            String username = usersRepository.findUserByUuid(cookie[0].getValue());
+
+//            for (int i = 0; i < uuid.length; i++) {
+//                System.out.println(uuid[i].getValue() + " " + uuid[i].getName());
+//            }
+//            System.out.println();
 
             if(!username.equals("0")) {
                 request.setAttribute("username", username);
@@ -54,6 +60,15 @@ public class IntroAutServlet extends HttpServlet {
                 request.getRequestDispatcher("/html/aut.html").forward(request, response);
             }
         }
+    }
+
+    public String returnUuid(Cookie[] cookie) {
+        for (Cookie value : cookie) {
+            if (value.getName().equals("id")) {
+                return value.getValue();
+            }
+        }
+        return null;
     }
 
 }
