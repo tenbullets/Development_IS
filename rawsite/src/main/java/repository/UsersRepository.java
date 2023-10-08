@@ -1,4 +1,4 @@
-package servlets;
+package repository;
 
 import models.User;
 

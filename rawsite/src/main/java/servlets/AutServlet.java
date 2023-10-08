@@ -1,11 +1,11 @@
-package ru.itis;
+package servlets;
 
-import servlets.UsersRepository;
-import servlets.UsersRepositoryJdbcImpl;
+import repository.DataRepositoryJdbc;
+import repository.UsersRepository;
+import repository.UsersRepositoryJdbcImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +21,7 @@ public class AutServlet extends HttpServlet {
     private static final String DB_PASSWORD = "qwikWell12";
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/test";
     private UsersRepository usersRepository;
+    private DataRepositoryJdbc data;
 
     @Override
     public void init() throws ServletException {
@@ -33,13 +34,14 @@ public class AutServlet extends HttpServlet {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             Statement statement = connection.createStatement();
             usersRepository = new UsersRepositoryJdbcImpl(connection, statement);
+            data = new DataRepositoryJdbc(connection, statement);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String result;
         String status;
 
@@ -48,9 +50,7 @@ public class AutServlet extends HttpServlet {
 
         if(usersRepository.findUserByName(username)) {
             String uniqueID = usersRepository.returnUuid(username);
-            Cookie uuidCookie = new Cookie("id",uniqueID);
-            response.addCookie(uuidCookie);
-            uuidCookie.setMaxAge(3600 * 24);
+            data.addCookieId(uniqueID, response);
         }
 
         if(usersRepository.findUser(username, password)) {

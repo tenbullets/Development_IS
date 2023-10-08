@@ -1,4 +1,4 @@
-package servlets;
+package repository;
 
 import models.User;
 
@@ -106,10 +106,9 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     @Override
     public String findUserByUuid(String uuid) {
         try (Statement statement = connection.createStatement()) {
-            ResultSet uuidDb = statement.executeQuery(UUID);
 
             User copy = null;
-
+            ResultSet uuidDb = statement.executeQuery(UUID);
             while (uuidDb.next()) {
                 User user = User.builder()
                         .id(uuidDb.getString("user_id"))
@@ -141,10 +140,9 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     @Override
     public String returnUuid(String username) {
         try (Statement statement = connection.createStatement()){
-            ResultSet usersDb = statement.executeQuery(USERS);
 
             User copy = null;
-
+            ResultSet usersDb = statement.executeQuery(USERS);
             while (usersDb.next()) {
                 User user = User.builder()
                         .id(usersDb.getString("user_id"))

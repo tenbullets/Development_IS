@@ -1,7 +1,7 @@
-package ru.itis;
+package servlets;
 
-import servlets.UsersRepository;
-import servlets.UsersRepositoryJdbcImpl;
+import repository.UsersRepository;
+import repository.UsersRepositoryJdbcImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,13 +46,6 @@ public class IntroAutServlet extends HttpServlet {
             Cookie[] cookie = (request.getCookies());
             String username = usersRepository.findUserByUuid(getUuid(cookie));
 
-//            String username = usersRepository.findUserByUuid(cookie[0].getValue());
-
-//            for (int i = 0; i < uuid.length; i++) {
-//                System.out.println(uuid[i].getValue() + " " + uuid[i].getName());
-//            }
-//            System.out.println();
-
             if(!username.equals("0")) {
                 request.setAttribute("username", username);
                 request.getRequestDispatcher("/jsp/choice.jsp").forward(request, response);
@@ -60,6 +53,7 @@ public class IntroAutServlet extends HttpServlet {
                 request.getRequestDispatcher("/html/aut.html").forward(request, response);
             }
         }
+
     }
 
     public String getUuid(Cookie[] cookie) {
@@ -70,5 +64,4 @@ public class IntroAutServlet extends HttpServlet {
         }
         return null;
     }
-
 }

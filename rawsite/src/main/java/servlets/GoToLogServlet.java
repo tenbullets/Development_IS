@@ -1,7 +1,7 @@
-package ru.itis;
+package servlets;
 
-import servlets.UsersRepository;
-import servlets.UsersRepositoryJdbcImpl;
+import repository.UsersRepository;
+import repository.UsersRepositoryJdbcImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
